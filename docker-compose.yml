@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  mosquitto:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mosquitto-broker
+    restart: always
+    ports:
+      - "1883:1883"  # MQTT Port
+      - "9001:9001"  # WebSocket Port (optional)
+    networks:
+      - mqtt_network
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+  subscriber:
+    build: 
+      context: ./subscriber  # Path to subscriber's Dockerfile
+      dockerfile: Dockerfile
+    container_name: mqtt-subscriber
+    restart: always
+    depends_on:
+      - mosquitto
+    networks:
+      - mqtt_network
+    environment:
+      - BROKER_HOST=mosquitto-broker  # Use service name for internal Docker networking
+
+networks:
+  mqtt_network:
+    driver: bridge

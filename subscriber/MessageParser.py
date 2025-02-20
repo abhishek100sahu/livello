@@ -131,10 +131,10 @@ if __name__ == "__main__":
     db = Database()
 
     valid_json = '''{
-        "device_id": "sensor_001",
+        "device_id": "sensor_002",
         "sensor_type": "temperature",
         "sensor_value": 22.5,
-        "timestamp": "2024-02-19T12:34:56"
+        "timestamp": "2025-02-20 23:57:54"
     }'''
 
     invalid_json = '''{

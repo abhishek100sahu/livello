@@ -1,0 +1,19 @@
+# Use an official Python base image
+FROM python:3.9
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the subscriber script and requirements
+COPY requirements.txt .
+COPY subscriber.py .
+COPY MessageParser.py .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Environment variables for the broker
+ENV BROKER_HOST=mosquitto-broker
+
+# Run the subscriber script
+CMD ["python", "subscriber.py"]
