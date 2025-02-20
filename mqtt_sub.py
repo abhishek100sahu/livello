@@ -1,53 +1,62 @@
 import asyncio
 import os
 import signal
-import time
 
 from gmqtt import Client as MQTTClient
 
-# Use uvloop for better performance
-import uvloop
-asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-
 STOP = asyncio.Event()
 
-def on_connect(client, flags, rc, properties):
-    print('Connected')
-    client.subscribe('TEST/#', qos=0)
-
-def on_message(client, topic, payload, qos, properties):
-    print('RECV MSG:', payload)
-
-def on_disconnect(client, packet, exc=None):
-    print('Disconnected')
-
-def on_subscribe(client, mid, qos, properties):
-    print('SUBSCRIBED')
 
 def ask_exit(*args):
     STOP.set()
 
+
+def on_connect(client, flags, rc, properties):
+    print("Subscriber connected to broker.")
+    client.subscribe("TEST/#", qos=0)
+
+
+def on_message(client, topic, payload, qos, properties):
+    print(f"Received message from {topic}: {payload.decode()}")
+
+
+def on_disconnect(client, packet, exc=None):
+    print("Subscriber disconnected.")
+
+
+def on_subscribe(client, mid, qos, properties):
+    print("Subscriber successfully subscribed to topic.")
+
+
 async def main():
-    client = MQTTClient("client-id")
+    client = MQTTClient("subscriber-client-id")
 
     client.on_connect = on_connect
     client.on_message = on_message
     client.on_disconnect = on_disconnect
     client.on_subscribe = on_subscribe
 
-    await client.connect("127.0.0.1")  # Local MQTT Broker
+    await client.connect("172.17.0.2")
 
-    client.publish('TEST/TIME', str(time.time()), qos=1)
+    # Use asyncio.create_task to handle stopping gracefully
+    stop_task = asyncio.create_task(STOP.wait())
 
-    await STOP.wait()
+    try:
+        await stop_task  # Wait until STOP event is set
+    except KeyboardInterrupt:
+        print("KeyboardInterrupt received, shutting down...")
+
     await client.disconnect()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
-    loop.add_signal_handler(signal.SIGINT, ask_exit)
-    loop.add_signal_handler(signal.SIGTERM, ask_exit)
+    # Unix-only signal handling
+    if os.name != "nt":  # Not Windows
+        loop.add_signal_handler(signal.SIGINT, ask_exit)
+        loop.add_signal_handler(signal.SIGTERM, ask_exit)
 
     try:
         loop.run_until_complete(main())
