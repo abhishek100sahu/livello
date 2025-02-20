@@ -1,0 +1,2 @@
+2025-02-20 18:47:07,967 - ERROR: Invalid type for 'device_id', expected str - Message: {'device_id': 123, 'sensor_type': 'temperature', 'sensor_value': 'invalid_float', 'timestamp': 'not-a-valid-timestamp'}
+2025-02-20 18:50:58,614 - ERROR: Invalid type for 'device_id', expected str - Message: {'device_id': 123, 'sensor_type': 'temperature', 'sensor_value': 'invalid_float', 'timestamp': 'not-a-valid-timestamp'}
