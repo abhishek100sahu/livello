@@ -1,0 +1,144 @@
+api
+
+http://127.0.0.1:5000/api/v1/devices
+
+http://127.0.0.1:5000/api/v1/events/sensor_002?limit=5&offset=0
+
+mosquitto_pub
+
+mosquitto_pub -h 127.0.0.1 -p 1883 -t "devices/events" -m '{
+    "device_id": "sensor_002",
+    "sensor_type": "temperature",
+    "sensor_value": 22.5,
+    "timestamp": "2025-02-20 23:57:54"
+}'
+
+IoT Device API
+
+Overview
+
+This Flask-based API provides endpoints to retrieve registered IoT devices and their latest event data. The API is rate-limited and stores data in an SQLite database.
+
+Prerequisites
+
+Docker and Docker Compose installed
+
+API running inside a containerized environment
+
+Running the API
+
+To start the API using Docker Compose, run:
+
+docker-compose up -d flask-api
+
+This will start the Flask API and make it accessible on http://localhost:5000.
+
+API Endpoints
+
+1. Get List of Devices
+
+Endpoint: /api/v1/devices
+
+Method: GET
+
+Description: Retrieves all registered devices with their last seen timestamps.
+
+Rate Limit: 50 requests per minute
+
+Request Example:
+
+curl -X GET "http://localhost:5000/api/v1/devices" -H "Accept: application/json"
+
+Response Example:
+
+{
+  "devices": [
+    { "device_id": "1234", "last_seen": "2024-02-19 14:30:00" },
+    { "device_id": "5678", "last_seen": "2024-02-19 14:40:00" }
+  ]
+}
+
+2. Get Latest Events for a Device
+
+Endpoint: /api/v1/events/<device_id>
+
+Method: GET
+
+Description: Retrieves the latest events for a given device with optional pagination.
+
+Rate Limit: 50 requests per minute
+
+Query Parameters:
+
+limit (optional, default=10): Number of latest events to return.
+
+offset (optional, default=0): Offset for pagination.
+
+Request Example:
+
+curl -X GET "http://localhost:5000/api/v1/events/1234?limit=5&offset=0" -H "Accept: application/json"
+
+Response Example:
+
+{
+  "events": [
+    {
+      "event_id": "evt-1",
+      "device_id": "1234",
+      "sensor_type": "temperature",
+      "sensor_value": "22.5",
+      "timestamp": "2024-02-19 14:35:00"
+    },
+    {
+      "event_id": "evt-2",
+      "device_id": "1234",
+      "sensor_type": "humidity",
+      "sensor_value": "45",
+      "timestamp": "2024-02-19 14:30:00"
+    }
+  ]
+}
+
+Using Postman
+
+Open Postman.
+
+Create a new request.
+
+Set the request type to GET.
+
+Enter the URL: http://localhost:5000/api/v1/devices.
+
+Click Send to get the response.
+
+For event data:
+
+Change the URL to http://localhost:5000/api/v1/events/{device_id}
+
+Optionally, add query parameters for limit and offset.
+
+Logging
+
+API logs are stored in the logs/ directory as api_YYYY-MM-DD.log files.
+
+To check logs:
+
+tail -f logs/api_$(date +%F).log
+
+Stopping the API
+
+To stop the API container:
+
+docker-compose down
+
+Troubleshooting
+
+Database Errors: Ensure sqlite_data volume is correctly mounted and accessible.
+
+Connection Refused: Check if the Flask API container is running using docker ps.
+
+Rate Limiting Issues: If requests are blocked, wait a minute before retrying.
+
+Author
+
+Abhishek Sahu [IoT Application Engineer]

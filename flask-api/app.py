@@ -162,14 +162,12 @@ def get_latest_events(device_id: str) -> tuple:
 
         if not events:
             response = {
-                "transaction_id": transaction_id,
                 "message": "No events found for this device.",
             }
             log_request_response(transaction_id, f"/events/{device_id}", 404, response)
             return jsonify(response), 404
 
         response_data = {
-            "transaction_id": transaction_id,
             "events": [dict(event) for event in events],
         }
         log_request_response(transaction_id, f"/events/{device_id}", 200, response_data)
