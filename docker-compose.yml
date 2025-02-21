@@ -1,33 +1,55 @@
-version: "3.8"
+version: "3.9"
 
 services:
-  mosquitto:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: mosquitto-broker
+  mqtt-broker:
+    image: eclipse-mosquitto:latest
+    container_name: mqtt_broker
     restart: always
-    ports:
-      - "1883:1883"  # MQTT Port
-      - "9001:9001"  # WebSocket Port (optional)
     networks:
-      - mqtt_network
+      - iot_network
     volumes:
-      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    ports:
+      - "9001:9001" # WebSockets Port
+      - "1883:1883" # MQTT Port
 
-  subscriber:
-    build: 
-      context: ./subscriber  # Path to subscriber's Dockerfile
-      dockerfile: Dockerfile
-    container_name: mqtt-subscriber
+  mqtt-subscriber:
+    build: ./mqtt-subscriber
+    container_name: mqtt_subscriber
     restart: always
     depends_on:
-      - mosquitto
+      - mqtt-broker
+      - flask-api
     networks:
-      - mqtt_network
+      - iot_network
     environment:
-      - BROKER_HOST=mosquitto-broker  # Use service name for internal Docker networking
+      - MQTT_BROKER_HOST=mqtt-broker
+      - MQTT_TOPIC=devices/events
+      - DB_PATH=/data/iot_data.db
+    volumes:
+      - sqlite_data:/data
+
+  flask-api:
+    build: ./flask-api
+    container_name: flask_api
+    restart: always
+    depends_on:
+      - mqtt-broker
+    networks:
+      - iot_network
+    environment:
+      - DB_PATH=/data/iot_data.db
+    volumes:
+      - sqlite_data:/data
+    ports:
+      - "5000:5000"
 
 networks:
-  mqtt_network:
+  iot_network:
     driver: bridge
+
+volumes:
+  sqlite_data:
+    driver: local

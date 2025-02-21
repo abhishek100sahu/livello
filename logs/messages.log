@@ -1,0 +1,107 @@
+2025-02-21 16:55:49,344 - ERROR: Unexpected error: [Errno -3] Temporary failure in name resolution
+Traceback (most recent call last):
+  File "/home/abhishek-sahu/Documents/Learning/livello/mqtt-subscriber/subscriber.py", line 80, in <module>
+    asyncio.run(main())  # Better task handling
+    ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/abhishek-sahu/Documents/Learning/livello/mqtt-subscriber/subscriber.py", line 60, in main
+    await client.connect(BROKER_IP)
+  File "/home/abhishek-sahu/Documents/Learning/livello/.venv/lib/python3.12/site-packages/gmqtt/client.py", line 224, in connect
+    self._connection = await self._create_connection(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhishek-sahu/Documents/Learning/livello/.venv/lib/python3.12/site-packages/gmqtt/client.py", line 240, in _create_connection
+    connection = await MQTTConnection.create_connection(host, port, ssl, clean_session, keepalive, logger=self._logger)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhishek-sahu/Documents/Learning/livello/.venv/lib/python3.12/site-packages/gmqtt/mqtt/connection.py", line 27, in create_connection
+    transport, protocol = await loop.create_connection(MQTTProtocol, host, port, ssl=ssl)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 1080, in create_connection
+    infos = await self._ensure_resolved(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 1456, in _ensure_resolved
+    return await loop.getaddrinfo(host, port, family=family, type=type,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 901, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 963, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno -3] Temporary failure in name resolution
+2025-02-21 16:55:51,645 - ERROR: Unexpected error: [Errno -3] Temporary failure in name resolution
+Traceback (most recent call last):
+  File "/home/abhishek-sahu/Documents/Learning/livello/mqtt-subscriber/subscriber.py", line 80, in <module>
+    asyncio.run(main())  # Better task handling
+    ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/abhishek-sahu/Documents/Learning/livello/mqtt-subscriber/subscriber.py", line 60, in main
+    await client.connect(BROKER_IP)
+  File "/home/abhishek-sahu/Documents/Learning/livello/.venv/lib/python3.12/site-packages/gmqtt/client.py", line 224, in connect
+    self._connection = await self._create_connection(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhishek-sahu/Documents/Learning/livello/.venv/lib/python3.12/site-packages/gmqtt/client.py", line 240, in _create_connection
+    connection = await MQTTConnection.create_connection(host, port, ssl, clean_session, keepalive, logger=self._logger)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhishek-sahu/Documents/Learning/livello/.venv/lib/python3.12/site-packages/gmqtt/mqtt/connection.py", line 27, in create_connection
+    transport, protocol = await loop.create_connection(MQTTProtocol, host, port, ssl=ssl)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 1080, in create_connection
+    infos = await self._ensure_resolved(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 1456, in _ensure_resolved
+    return await loop.getaddrinfo(host, port, family=family, type=type,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 901, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 963, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno -3] Temporary failure in name resolution
+2025-02-21 17:15:06,075 - INFO: [CONNECTION MADE]
+2025-02-21 17:15:06,075 - INFO: [SEND SUB] 1 [b'devices/events']
+2025-02-21 17:15:06,076 - INFO: [SUBACK] 1 (0,)
+2025-02-21 17:15:14,483 - INFO: Timestamp: 2025-02-21 17:15:14, Valid Message: {'device_id': 'sensor_004', 'sensor_type': 'temperature', 'sensor_value': 24.5, 'timestamp': '2024-02-20 23:57:54'}
+2025-02-21 17:15:14,483 - ERROR: [ERROR HANDLE PKG]
+Traceback (most recent call last):
+  File "/home/abhishek-sahu/Documents/Learning/livello/.venv/lib/python3.12/site-packages/gmqtt/mqtt/handler.py", line 383, in __call__
+    result = self._handle_packet(cmd, packet)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhishek-sahu/Documents/Learning/livello/.venv/lib/python3.12/site-packages/gmqtt/mqtt/handler.py", line 213, in _handle_packet
+    handler(cmd, packet)
+  File "/home/abhishek-sahu/Documents/Learning/livello/.venv/lib/python3.12/site-packages/gmqtt/mqtt/handler.py", line 348, in _handle_publish_packet
+    run_coroutine_or_function(self.on_message, self, print_topic, packet, qos, properties)
+  File "/home/abhishek-sahu/Documents/Learning/livello/.venv/lib/python3.12/site-packages/gmqtt/mqtt/utils.py", line 117, in run_coroutine_or_function
+    func(*args, **kwargs)
+  File "/home/abhishek-sahu/Documents/Learning/livello/mqtt-subscriber/subscriber.py", line 29, in on_message
+    MessageParser.parse_message(payload.decode())
+  File "/home/abhishek-sahu/Documents/Learning/livello/mqtt-subscriber/MessageParser.py", line 85, in parse_message
+    db = Database()
+         ^^^^^^^^^^
+  File "/home/abhishek-sahu/Documents/Learning/livello/mqtt-subscriber/Database.py", line 10, in __init__
+    self.conn = sqlite3.connect(self.db_path, check_same_thread=False)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: unable to open database file
+2025-02-21 17:16:53,208 - INFO: [CONN CLOSE NORMALLY]

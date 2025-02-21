@@ -1,5 +1,5 @@
-# Use an official Python base image
-FROM python:3.9
+# Official Python base image
+FROM python:3.9.21-alpine3.21
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -8,6 +8,7 @@ WORKDIR /app
 COPY requirements.txt .
 COPY subscriber.py .
 COPY MessageParser.py .
+COPY Database.py .
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
@@ -16,4 +17,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 ENV BROKER_HOST=mosquitto-broker
 
 # Run the subscriber script
-CMD ["python", "subscriber.py"]
+CMD ["python3", "subscriber.py"]

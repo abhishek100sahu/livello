@@ -1,38 +1,47 @@
 import asyncio
 import os
 import signal
-
+import uuid
 from gmqtt import Client as MQTTClient
 from MessageParser import MessageParser
 
-STOP = asyncio.Event()
+STOP = None
 
-TOPIC = "devices/events"
+TOPIC = os.getenv("MQTT_TOPIC", "devices/events")
+BROKER_IP = os.getenv("MQTT_BROKER_HOST", "mqtt-broker")
 
-# Use the container name as the broker address (Docker internal DNS resolution)
-BROKER_IP = "mosquitto"
+# TOPIC = "devices/events"
+# BROKER_IP = "127.0.0.1"
+
 
 def ask_exit(*args):
-    STOP.set()
+    if STOP:
+        STOP.set()
+
 
 def on_connect(client, flags, rc, properties):
-    print("✅ Subscriber connected to broker.")
+    print(f"Subscriber connected to broker.")
     client.subscribe(TOPIC, qos=0)
 
-def on_message(client, topic, payload, qos, properties):
-    print(f"📩 Received message from {topic}: {payload.decode()}")
 
-    parsed_message = MessageParser.parse_message(payload.decode())
-    print("✅ Parsed Message:", parsed_message)
+def on_message(client, topic, payload, qos, properties):
+    print(f"Received message from {topic}: {payload.decode()}")
+    MessageParser.parse_message(payload.decode())
+
 
 def on_disconnect(client, packet, exc=None):
-    print("❌ Subscriber disconnected.")
+    print("Subscriber disconnected.")
+
 
 def on_subscribe(client, mid, qos, properties):
-    print("✅ Successfully subscribed to topic.")
+    print("Successfully subscribed to topic.")
+
 
 async def main():
-    client = MQTTClient("subscriber-client-id")
+    global STOP
+    STOP = asyncio.Event()  # Create inside main event loop
+
+    client = MQTTClient(client_id=f"{uuid.uuid4().hex[:8].upper()}")
 
     client.on_connect = on_connect
     client.on_message = on_message
@@ -43,11 +52,12 @@ async def main():
 
     # Wait for STOP event to exit gracefully
     await STOP.wait()
-    
+
     await client.disconnect()
 
+
 if __name__ == "__main__":
-    loop = asyncio.new_event_loop()
+    loop = asyncio.new_event_loop()  # Ensuring a clean event loop
     asyncio.set_event_loop(loop)
 
     if os.name != "nt":  # Unix-based signal handling

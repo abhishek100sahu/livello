@@ -1,9 +1,0 @@
-2025-02-20 18:47:07,967 - ERROR: Invalid type for 'device_id', expected str - Message: {'device_id': 123, 'sensor_type': 'temperature', 'sensor_value': 'invalid_float', 'timestamp': 'not-a-valid-timestamp'}
-2025-02-20 18:50:58,614 - ERROR: Invalid type for 'device_id', expected str - Message: {'device_id': 123, 'sensor_type': 'temperature', 'sensor_value': 'invalid_float', 'timestamp': 'not-a-valid-timestamp'}
-2025-02-20 23:52:58,970 - ERROR: Invalid JSON format: {
-        "device_id": "sensor_001",
-        "sensor_type": "temperature",
-        "sensor_value": 22.5,
-        "timestamp": 2025-02-20 23:52:58.970667}
-2025-02-20 23:52:58,970 - ERROR: Invalid type for 'device_id', expected str - Message: {'device_id': 123, 'sensor_type': 'temperature', 'sensor_value': 'invalid_float', 'timestamp': 'not-a-valid-timestamp'}
-2025-02-20 23:58:58,845 - ERROR: Invalid type for 'device_id', expected str - Message: {'device_id': 123, 'sensor_type': 'temperature', 'sensor_value': 'invalid_float', 'timestamp': 'not-a-valid-timestamp'}
