@@ -167,8 +167,3 @@ docker-compose down
 
 ---
 
-## Author
-[Your Name]
-
-For any issues, please open a ticket in the repository.
-
