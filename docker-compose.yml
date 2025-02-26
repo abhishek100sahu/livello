@@ -29,7 +29,7 @@ services:
       - MQTT_TOPIC=devices/events
       - DB_PATH=/data/iot_data.db
     volumes:
-      - sqlite_data:/data
+      - data:/data
 
   flask-api:
     build: ./flask-api
@@ -42,7 +42,7 @@ services:
     environment:
       - DB_PATH=/data/iot_data.db
     volumes:
-      - sqlite_data:/data
+      - data:/data
     ports:
       - "5000:5000"
 
@@ -51,5 +51,5 @@ networks:
     driver: bridge
 
 volumes:
-  sqlite_data:
+  data:
     driver: local
